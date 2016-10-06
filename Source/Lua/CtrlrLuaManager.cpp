@@ -46,6 +46,7 @@
 #include "Deprecated/CtrlrLuaRectangle.h"
 #include "Deprecated/CtrlrLuaComponentAnimator.h"
 
+
 CtrlrLuaManager::CtrlrLuaManager(CtrlrPanel &_owner)
 	:	owner(_owner),
 		luaManagerTree(Ids::luaManager),
@@ -149,9 +150,9 @@ void CtrlrLuaManager::createLuaState()
     lua_pushliteral(luaState, "bit");
     lua_call(luaState, 1, 0);
 
-    lua_pushcfunction(luaState, luaopen_usb);
-    lua_pushliteral(luaState, "usb");
-    lua_call(luaState, 1, 0);
+    //lua_pushcfunction(luaState, luaopen_usb);
+    //lua_pushliteral(luaState, "usb");
+    //lua_call(luaState, 1, 0);
 
 	using namespace luabind;
     open(luaState);

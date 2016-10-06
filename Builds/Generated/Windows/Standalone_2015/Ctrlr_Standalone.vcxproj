@@ -29,15 +29,16 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AE5BFF94-9212-18D5-D78C-303C614D5D47}</ProjectGuid>
     <PlatformToolset>v140_xp</PlatformToolset>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
@@ -74,8 +75,8 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\..\..\Bin\Standalone\$(Platform)$(NATIVE_ARCH)\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Ctrlr-Debug-$(Platform)$(NATIVE_ARCH)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Ctrlr-Debug-$(Platform)$(NATIVE_ARCH)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ctrlr</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ctrlrsdk</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Ctrlr-$(Platform)$(NATIVE_ARCH)</TargetName>
@@ -88,6 +89,18 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release_Nightly|x64'">true</GenerateManifest>
     <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>c:\Program Files (x86)\Lua\5.1.4\src;$(IncludePath)</IncludePath>
+    <ReferencePath>c:\Program Files (x86)\Lua\5.1.4\src;$(ReferencePath)</ReferencePath>
+    <LibraryPath>c:\Program Files (x86)\Lua\5.1.4\lib;$(LibraryPath)</LibraryPath>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files %28x86%29\Lua\5.1.4\src;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <ReferencePath>C:\Program Files %28x86%29\Lua\5.1.4\src;$(VC_ReferencesPath_x64);</ReferencePath>
+    <LibraryPath>C:\lua\514\bin;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -99,7 +112,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\..\..\Standalone\JuceLibraryCode;..\..\..\..\Juce\modules;../../../../Boost;../../../../Source/Lua;../../../../Source/Lua/luabind;../../../../Source/Lua/luabind/luabind;../../../../Source/Misc;../../../../Source/Misc/include;../../../../Source/MIDI;../../../../Source;../../../../Source/UIComponents;../../../../Source/Core;../../../../Source/Plugin;../../../../Source/Application;../../../../Source/Misc/libusb;../../../../Source/Misc/include/lo;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\Standalone\JuceLibraryCode;..\..\..\..\Juce\modules;../../../../Boost;../../../../Source/Lua;../../../../Source/SDK;../../../../Source/Lua/luabind;../../../../Source/Lua/luabind/luabind;../../../../Source/Misc;../../../../Source/Misc/include;../../../../Source/MIDI;../../../../Source;../../../../Source/UIComponents;../../../../Source/Core;../../../../Source/Plugin;../../../../Source/Application;../../../../Source/Misc/libusb;../../../../Source/Misc/include/lo;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;CTRLR_NIGHTLY=1;JucePlugin_Build_Standalone;JUCER_VS2015_19DE27A1=1;JUCE_APP_VERSION=5.4.0;JUCE_APP_VERSION_HEX=0x50400;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -117,7 +130,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\Ctrlr-Debug-$(Platform)$(NATIVE_ARCH).exe</OutputFile>
+      <OutputFile>$(OutDir)\ctrlr.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt.lib; msvcrt.lib;;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,7 +139,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalDependencies>iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>iphlpapi.lib;lua514.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -147,8 +160,8 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\..\..\Standalone\JuceLibraryCode;..\..\..\..\Juce\modules;../../../../Boost;../../../../Source/Lua;../../../../Source/Lua/luabind;../../../../Source/Lua/luabind/luabind;../../../../Source/Misc;../../../../Source/Misc/include;../../../../Source/MIDI;../../../../Source;../../../../Source/UIComponents;../../../../Source/Core;../../../../Source/Plugin;../../../../Source/Application;../../../../Source/Misc/libusb;../../../../Source/Misc/include/lo;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;CTRLR_NIGHTLY=1;JucePlugin_Build_Standalone;JUCER_VS2015_19DE27A1=1;JUCE_APP_VERSION=5.4.0;JUCE_APP_VERSION_HEX=0x50400;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>c:\Program Files (x86)\Lua\5.1.4\src;..\..\..\Standalone\JuceLibraryCode;..\..\..\..\Juce\modules;../../../../Boost;../../../../Source/Lua;../../../../Source/SDK;../../../../Source/Lua/luabind;../../../../Source/Lua/luabind/luabind;../../../../Source/Misc;../../../../Source/Misc/include;../../../../Source/MIDI;../../../../Source;../../../../Source/UIComponents;../../../../Source/Core;../../../../Source/Plugin;../../../../Source/Application;../../../../Source/Misc/libusb;../../../../Source/Misc/include/lo;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LUA_COMPAT_ALL;_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;CTRLR_NIGHTLY=1;JucePlugin_Build_Standalone;JUCER_VS2015_19DE27A1=1;JUCE_APP_VERSION=5.4.0;JUCE_APP_VERSION_HEX=0x50400;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>
@@ -174,7 +187,8 @@
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalDependencies>iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua514.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\lua\514\bin</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -804,26 +818,6 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_Nightly|x64'">
       </AdditionalOptions>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Source\Misc\lua.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Nightly|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Nightly|x64'">NotUsing</PrecompiledHeader>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_Nightly|Win32'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_Nightly|x64'">
-      </AdditionalOptions>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Source\Misc\send.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -1090,6 +1084,7 @@
     <ClCompile Include="..\..\..\..\Source\Native\CtrlrWindows.cpp" />
     <ClCompile Include="..\..\..\..\Source\Plugin\CtrlrProcessor.cpp" />
     <ClCompile Include="..\..\..\..\Source\Plugin\CtrlrProcessorEditorForLive.cpp" />
+    <ClCompile Include="..\..\..\..\Source\SDK\Win32Project1.cpp" />
     <ClCompile Include="..\..\..\..\Source\UIComponents\CtrlrAbout.cpp" />
     <ClCompile Include="..\..\..\..\Source\UIComponents\CtrlrApplicationWindow\CtrlrDocumentPanel.cpp" />
     <ClCompile Include="..\..\..\..\Source\UIComponents\CtrlrApplicationWindow\CtrlrEditor.cpp" />
@@ -3187,13 +3182,8 @@
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\get_pointer.hpp" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\handle.hpp" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\iterator_policy.hpp" />
-    <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\lauxlib.h" />
-    <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\lua.h" />
-    <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\lua.hpp" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\lua_include.hpp" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\luabind.hpp" />
-    <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\luaconf.h" />
-    <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\lualib.h" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\make_function.hpp" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\nil.hpp" />
     <ClInclude Include="..\..\..\..\Source\Lua\luabind\luabind\no_dependency.hpp" />
