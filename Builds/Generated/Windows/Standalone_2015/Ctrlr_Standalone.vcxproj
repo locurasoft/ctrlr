@@ -75,7 +75,7 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\..\..\Bin\Standalone\$(Platform)$(NATIVE_ARCH)\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ctrlr</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ctrlrsdk</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ctrlrsdk</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
@@ -130,7 +130,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)\ctrlr.dll</OutputFile>
+      <OutputFile>$(OutDir)\ctrlrsdk.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>libcmt.lib; msvcrt.lib;;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -160,7 +160,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>c:\Program Files (x86)\Lua\5.1.4\src;..\..\..\Standalone\JuceLibraryCode;..\..\..\..\Juce\modules;../../../../Boost;../../../../Source/Lua;../../../../Source/SDK;../../../../Source/Lua/luabind;../../../../Source/Lua/luabind/luabind;../../../../Source/Misc;../../../../Source/Misc/include;../../../../Source/MIDI;../../../../Source;../../../../Source/UIComponents;../../../../Source/Core;../../../../Source/Plugin;../../../../Source/Application;../../../../Source/Misc/libusb;../../../../Source/Misc/include/lo;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\Program Files (x86)\Lua\5.1.4\src;..\..\..\Standalone\JuceLibraryCode;..\..\..\..\Juce\modules;../../../../Boost;../../../../Source/Lua;../../../../Source/SDK;../../../../Source/Lua/luabind;../../../../Source/Lua/luabind/luabind;../../../../Source/Misc;../../../../Source/Misc/include;../../../../Source/MIDI;../../../../Source;../../../../Source/UIComponents;../../../../Source/Core;../../../../Source/Plugin;../../../../Source/Application;../../../../Source/Misc/libusb;../../../../Source/SDK../../../../Source/Misc/include/lo;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LUA_COMPAT_ALL;_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;CTRLR_NIGHTLY=1;JucePlugin_Build_Standalone;JUCER_VS2015_19DE27A1=1;JUCE_APP_VERSION=5.4.0;JUCE_APP_VERSION_HEX=0x50400;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -195,7 +195,7 @@
       <OutputFile>$(IntDir)\Ctrlr-Debug-$(Platform)$(NATIVE_ARCH).bsc</OutputFile>
     </Bscmake>
     <PreBuildEvent>
-      <Command>C:\devel\JUCE\extras\Projucer\Builds\VisualStudio2015\x64\Release\Projucer.exe --resave-resources ..\..\..\..\Builds\Standalone\Ctrlr_Standalone.jucer</Command>
+      <Command>%JUCE_HOME%\extras\Projucer\Builds\VisualStudio2015\x64\Release\Projucer.exe --resave-resources ..\..\..\..\Builds\Standalone\Ctrlr_Standalone.jucer</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -1084,7 +1084,7 @@
     <ClCompile Include="..\..\..\..\Source\Native\CtrlrWindows.cpp" />
     <ClCompile Include="..\..\..\..\Source\Plugin\CtrlrProcessor.cpp" />
     <ClCompile Include="..\..\..\..\Source\Plugin\CtrlrProcessorEditorForLive.cpp" />
-    <ClCompile Include="..\..\..\..\Source\SDK\Win32Project1.cpp" />
+    <ClCompile Include="..\..\..\..\Source\SDK\CtrlrSdk.cpp" />
     <ClCompile Include="..\..\..\..\Source\UIComponents\CtrlrAbout.cpp" />
     <ClCompile Include="..\..\..\..\Source\UIComponents\CtrlrApplicationWindow\CtrlrDocumentPanel.cpp" />
     <ClCompile Include="..\..\..\..\Source\UIComponents\CtrlrApplicationWindow\CtrlrEditor.cpp" />
