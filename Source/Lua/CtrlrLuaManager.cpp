@@ -46,6 +46,13 @@
 #include "Deprecated/CtrlrLuaRectangle.h"
 #include "Deprecated/CtrlrLuaComponentAnimator.h"
 
+extern "C" static CtrlrLuaManager *luaThis;
+extern "C" int CtrlrLuaManager_getModule(lua_State *L);
+
+extern "C" int CtrlrLuaManager_getModule(lua_State *L) {
+	return static_cast<CtrlrLuaManager*>(luaThis)->getModule(L);
+}
+
 CtrlrLuaManager::CtrlrLuaManager(CtrlrPanel &_owner)
 	:	owner(_owner),
 		luaManagerTree(Ids::luaManager),
@@ -56,6 +63,7 @@ CtrlrLuaManager::CtrlrLuaManager(CtrlrPanel &_owner)
 		luaStateAudio(nullptr),
 		luaState(nullptr)
 {
+	luaThis = this;
 	methodManager			= new CtrlrLuaMethodManager(*this);
 	
 	if ((bool)owner.getCtrlrManagerOwner().getProperty(Ids::ctrlrLuaDisabled))
@@ -90,6 +98,14 @@ CtrlrLuaManager::CtrlrLuaManager(CtrlrPanel &_owner)
     ctrlrLuaDebugger        = new CtrlrLuaDebugger (*this);
 
 	luaManagerTree.addChild (methodManager->getManagerTree(), -1, 0);
+
+	/* Add the loader and put it in package.loaders */
+	lua_register(luaState, "get_module", CtrlrLuaManager_getModule);
+	luaL_dostring(luaState, "table.insert(package.loaders, 1, get_module)");
+	luaL_dostring(luaState, "table.insert(package.searchers, 1, get_module)");
+
+	lua_register(luaStateAudio, "get_module", CtrlrLuaManager_getModule);
+	luaL_dostring(luaStateAudio, "table.insert(package.loaders, get_module)");
 }
 
 CtrlrLuaManager::~CtrlrLuaManager()
@@ -107,6 +123,31 @@ CtrlrLuaManager::~CtrlrLuaManager()
 		lua_close(luaStateAudio);
 		deleteAndZero (ctrlrLuaDebugger);
 	}
+}
+
+int CtrlrLuaManager::getModule(lua_State *L) {
+	const char *modname = luaL_checkstring(L, 1);
+	const std::string fileExt(".lua");
+	bool foundMethod = false;
+
+	std::string fileName = modname + fileExt;
+	StringArray methodList = getMethodManager().getMethodList();
+	for (int i = 0; i < methodList.size(); ++i)
+	{
+		CtrlrLuaMethod* method = getMethodManager().getMethodByIndex(i);
+		if (method->getName().compare(fileName) == 0)
+		{
+			luaL_loadbuffer(L, method->getCode().toUTF8(), method->getCodeSize(), modname);
+			foundMethod = true;
+			break;
+		}
+	}
+
+	if (!foundMethod) {
+		lua_pushnil(L);
+	}
+
+	return 1;
 }
 
 void CtrlrLuaManager::createLuaState()
