@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CtrlrMacros.h"
+#include "CtrlrIDs.h"
 #include "CtrlrLog.h"
 #include "CtrlrStandaloneWindow.h"
 
@@ -101,6 +102,49 @@ class CtrlrApplication : public JUCEApplication
 
 							JUCEApplication::quit();
 						}
+						else if (parameters.contains("panelFile"))
+						{
+							File panelFile(parameterValues[parameters.indexOf("panelFile")]);
+							String exportPath = panelFile.getParentDirectory().getFullPathName() + "\\" + panelFile.getFileNameWithoutExtension() + ".bpanelz";
+							File exportedFile(exportPath);
+							ScopedPointer <XmlElement> xml(XmlDocument::parse(panelFile));
+							if (xml)
+							{
+								ValueTree vt = (ValueTree::fromXml(*xml));
+								ValueTree rel = vt.getChildWithName(Ids::resourceExportList);
+								for (int i = 0; i<rel.getNumChildren(); i++)
+								{
+									ValueTree res = rel.getChild(i);
+									File resourceDataFile(res.getProperty(Ids::resourceSourceFile));
+									if (resourceDataFile.existsAsFile())
+									{
+										MemoryBlock data;
+										resourceDataFile.loadFileAsData(data);
+										res.setProperty(Ids::resourceData, data.toBase64Encoding(), 0);
+									}
+								}
+								if (exportedFile.hasWriteAccess())
+								{
+									MemoryOutputStream compressedData;
+
+									{
+										GZIPCompressorOutputStream gzipOutputStream(&compressedData);
+										vt.writeToStream(gzipOutputStream);
+										gzipOutputStream.flush();
+									}
+
+									exportedFile.replaceWithData(compressedData.getData(), compressedData.getDataSize());
+								}
+
+								
+							}
+							else
+							{
+								_ERR("CtrlrPanel::openXmlPanel can't parse file contents as XML");
+							}
+							JUCEApplication::quit();
+						}
+
 					}
 
 
